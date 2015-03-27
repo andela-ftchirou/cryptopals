@@ -10,8 +10,24 @@ fn hex_char_to_digit(c: char) -> i32 {
 }
 
 impl HexString {
+    pub fn len(&self) -> usize {
+        self.storage.len()
+    }
+
     pub fn from_bytes(bytes: &Vec<u8>) -> HexString {
         HexString { storage: bytes.clone() }
+    }
+
+    pub fn from_repeating_byte(byte: u8, n: usize) -> HexString {
+        let mut bytes: Vec<u8> = Vec::new();
+        let mut len = n;
+
+        while len > 0 {
+            bytes.push(byte);
+            len -= 1;
+        }
+
+        HexString { storage: bytes }
     }
 
     pub fn from_string(s: String) -> HexString {
@@ -55,6 +71,14 @@ impl HexString {
             str.push(table[(*byte & 15) as usize]);
         }
 
+        str
+    }
+
+    pub fn to_ascii_string(&self) -> String {
+        let mut str = String::new();
+        for byte in self.storage.iter() {
+            str.push(*byte as char);
+        }
         str
     }
 }

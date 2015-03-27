@@ -1,5 +1,6 @@
 use super::challenge_1::Base64;
 use super::challenge_2;
+use super::challenge_3;
 
 use util::HexString;
 
@@ -20,4 +21,13 @@ fn fixed_xor() {
     let hex3 = challenge_2::xor(&hex1, &hex2);
 
     assert_eq!("746865206b696420646f6e277420706c6179", hex3.to_string());
+}
+
+#[test]
+fn single_byte_xor_cipher() {
+    let encrypted = HexString::from_string("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736".to_string());
+    
+    let decrypted = challenge_3::decrypt(&encrypted);
+
+    assert_eq!("Cooking MC's like a pound of bacon", decrypted);
 }
