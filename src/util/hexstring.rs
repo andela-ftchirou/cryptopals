@@ -19,7 +19,7 @@ impl HexString {
         let len = s.len();
         let mut start = 0;
 
-        while start < len - 2 {
+        while start <= len - 2 {
             let hex_chars = &s[start..(start + 2)];
             let mut digits: Vec<i32> = Vec::new();
 
@@ -37,6 +37,8 @@ impl HexString {
 
             start += 2;
         }
+
+        println!("");
 
         HexString { storage: bytes }
     }

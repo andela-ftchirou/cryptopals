@@ -1,12 +1,10 @@
 use std::num::Int;
 
+use util::funcs;
+
 pub struct Base64 {
     storage: Vec<u8>,
     padding: u32
-}
-
-fn get_bit(n: u32, byte: u8) -> u8 {
-    if byte & (1 << (7 - n)) == 0 { 0 } else { 1 }
 }
 
 fn compute_padding(bytes: &Vec<u8>) -> u32 {
@@ -60,7 +58,7 @@ impl Base64 {
 
             for byte in group.iter() {
                 for i in 0..8 {
-                    bitstream.push(get_bit(i, *byte));
+                    bitstream.push(funcs::get_bit(i, *byte));
                 }
             }
 
