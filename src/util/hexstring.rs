@@ -38,8 +38,6 @@ impl HexString {
             start += 2;
         }
 
-        println!("");
-
         HexString { storage: bytes }
     }
 

@@ -1,7 +1,7 @@
 use super::challenge_1::Base64;
 use super::challenge_2;
 
-use util::hexstring::HexString;
+use util::HexString;
 
 #[test]
 fn convert_hex_to_base64() {

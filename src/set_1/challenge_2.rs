@@ -1,4 +1,4 @@
-use util::hexstring::HexString;
+use util::HexString;
 
 pub fn xor(str1: &HexString, str2: &HexString) -> HexString {
     let bytes1: Vec<u8> = str1.to_bytes();
