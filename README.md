@@ -1,3 +1,5 @@
 ## Matasano Crypto Challenges
 
-My attemps (WIP) to the [Matasano crypto challenges](http://cryptopals.com).
+What do you do when you want to learn both Rust (or any other programming language) and crypto?
+
+You do the [matasano crypto challenges](http://cryptopals.com). Obvious!
