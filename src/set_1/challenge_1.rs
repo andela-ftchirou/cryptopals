@@ -1,35 +1,11 @@
 use std::num::Int;
 
+use util::Bytes;
 use util::funcs;
 
 pub struct Base64 {
-    storage: Vec<u8>,
+    storage: Bytes,
     padding: u32
-}
-
-fn compute_padding(bytes: &Vec<u8>) -> u32 {
-    let mut len = bytes.len();
-    let mut padding = 0;
-
-    if len < 3 {
-        padding = (3 - len) as u32;
-    } else {
-        while len % 3 != 0 {
-            padding += 1;
-            len += 1;
-        }
-    }
-
-    padding
-}
-
-fn pad(bytes: &mut Vec<u8>, padding: u32) {
-    let mut pad = padding;
-
-    while pad > 0 {
-        bytes.push(0);
-        pad -= 1;
-    }
 }
 
 impl Base64 {
@@ -37,13 +13,13 @@ impl Base64 {
         self.storage.len() - self.padding as usize
     }
 
-    pub fn to_bytes(&self) -> Vec<u8> {
+    pub fn to_bytes(&self) -> Bytes {
         self.storage.clone()
     }
 
-    pub fn from_bytes(bytes: &Vec<u8>) -> Base64 {
+    pub fn from_bytes(bytes: &Bytes) -> Base64 {
         let mut cbytes = bytes.clone();
-        let mut base64: Vec<u8> = Vec::new();
+        let mut base64: Bytes = Bytes::new();
         let padding = compute_padding(&cbytes);
 
         pad(&mut cbytes, padding);
@@ -104,5 +80,30 @@ impl Base64 {
         }
         
         base64_string
+    }
+}
+
+fn compute_padding(bytes: &Bytes) -> u32 {
+    let mut len = bytes.len();
+    let mut padding = 0;
+
+    if len < 3 {
+        padding = (3 - len) as u32;
+    } else {
+        while len % 3 != 0 {
+            padding += 1;
+            len += 1;
+        }
+    }
+
+    padding
+}
+
+fn pad(bytes: &mut Bytes, padding: u32) {
+    let mut pad = padding;
+
+    while pad > 0 {
+        bytes.push(0);
+        pad -= 1;
     }
 }

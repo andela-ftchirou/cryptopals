@@ -1,4 +1,5 @@
-pub use self::hexstring::HexString;
+pub use self::bytes::Bytes;
 
-mod hexstring;
+mod bytes;
+
 pub mod funcs;
