@@ -3,13 +3,11 @@ use std::collections::HashMap;
 use super::challenge_2;
 use util::Bytes;
 
-pub fn decrypt(encrypted: &Bytes) -> String {
+pub fn decrypt(encrypted: &Bytes) -> Bytes {
     let key: u8 = find_encryption_key(encrypted);
     let repeated_key: Bytes = Bytes::from_repeating_byte(key, encrypted.len());
 
-    let decrypted: Bytes = challenge_2::xor(&encrypted, &repeated_key);
-    
-    decrypted.to_ascii_string()
+    challenge_2::xor(&encrypted, &repeated_key)
 }
 
 pub fn find_encryption_key(encrypted: &Bytes) -> u8 {
@@ -67,7 +65,7 @@ fn compute_frequencies(bytes: &Bytes) -> HashMap<u8, u32> {
     map
 }
 
-fn build_scores() -> HashMap<u8, u32> {
+pub fn build_scores() -> HashMap<u8, u32> {
     let letters = "ETA OINSHRDLCUMWFGYPBVKJXQZ";
     let mut scores: HashMap<u8, u32> = HashMap::new();
     let mut score = 27;

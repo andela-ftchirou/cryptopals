@@ -1,6 +1,11 @@
+use std::fs::File;
+use std::io::Read;
+use std::path::Path;
+
 use super::challenge_1::Base64;
 use super::challenge_2;
 use super::challenge_3;
+use super::challenge_4;
 
 use util::Bytes;
 
@@ -29,5 +34,26 @@ fn single_byte_xor_cipher() {
     
     let decrypted = challenge_3::decrypt(&encrypted);
 
-    assert_eq!("Cooking MC's like a pound of bacon", decrypted);
+    assert_eq!("Cooking MC's like a pound of bacon", decrypted.to_ascii_string());
+}
+
+#[test]
+fn detect_single_character_xor() {
+    let path = Path::new("/home/faical/projects/cryptopals/src/set_1/challenge_4_data.txt");
+
+    let mut file = match File::open(&path) {
+        Ok(file) => file,
+        Err(err) => panic!("{}", err)
+    };
+
+    let mut input = String::new();
+    match file.read_to_string(&mut input) {
+        Ok(_) => match challenge_4::detect_single_character_xor(input) {
+            (encrypted, decrypted) => {
+                assert_eq!("7b5a4215415d544115415d5015455447414c155c46155f4058455c5b523f", encrypted.to_hex_string());
+                assert_eq!("Now that the party is jumping\n", decrypted.to_ascii_string());
+            }
+        },
+        Err(err) => panic!("{}", err)
+    }
 }
