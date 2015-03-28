@@ -46,6 +46,16 @@ impl Bytes {
         Bytes { raw: bytes }
     }
 
+    pub fn from_ascii_string(s: String) -> Bytes {
+        let mut bytes: Vec<u8> = Vec::new();
+
+        for c in s.chars() {
+            bytes.push(c as u8);
+        }
+
+        Bytes { raw: bytes }
+    }
+
     pub fn from_hex_string(s: String) -> Bytes {
         let mut bytes: Vec<u8> = Vec::new();
         let len = s.len();
@@ -88,6 +98,15 @@ impl Bytes {
 
     pub fn remove_duplicates(&mut self) {
         self.raw.dedup()
+    }
+
+    pub fn pad_with_zero(&mut self, padding: usize) {
+        let mut n = padding;
+
+        while n > 0 {
+            self.raw.push(0);
+            n -= 1;
+        }
     }
 
     pub fn to_ascii_string(&self) -> String {
