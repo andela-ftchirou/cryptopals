@@ -5,7 +5,7 @@ use util::funcs;
 
 pub struct Base64 {
     storage: Bytes,
-    padding: u32
+    padding: usize
 }
 
 impl Base64 {
@@ -34,7 +34,7 @@ impl Base64 {
 
             for byte in group.iter() {
                 for i in 0..8 {
-                    bitstream.push(funcs::get_bit(i, *byte));
+                    bitstream.push(funcs::get_bit(i, *byte, 8));
                 }
             }
 
@@ -57,6 +57,46 @@ impl Base64 {
         }
 
         Base64 { storage: base64, padding: padding }
+    }
+
+    pub fn decode(&self) -> Bytes {
+        let mut decoded: Bytes = Bytes::new();
+        let len = self.storage.len();
+        let mut start = 0;
+
+        while start <= len - 4 {
+            let group = &(self.storage)[start..(start + 4)];
+            let is_last_group: bool = (start == len - 4);
+            let mut bitstream: Vec<u8> = Vec::new();
+
+            for bits in group.iter() {
+                for i in 0..6 {
+                    bitstream.push(funcs::get_bit(i, *bits, 6));
+                }
+            }
+
+            let mut left = 0;
+            let bytes_size: usize = if !is_last_group { 24 } else { 24 - (self.padding * 8) };
+
+            while left < bytes_size {
+                let bits = &bitstream[left..(left + 8)];
+                let mut byte = 0;
+                let mut exp = 7;
+
+                for bit in bits {
+                    byte += bit * 2.pow(exp);
+                    if exp > 0 { exp -= 1 }
+                }
+
+                decoded.push(byte);
+
+                left += 8;
+            }
+
+            start += 4;
+        }
+
+        decoded
     }
 
     pub fn to_string(&self) -> String {
@@ -83,12 +123,12 @@ impl Base64 {
     }
 }
 
-fn compute_padding(bytes: &Bytes) -> u32 {
+fn compute_padding(bytes: &Bytes) -> usize {
     let mut len = bytes.len();
-    let mut padding = 0;
+    let mut padding: usize = 0;
 
     if len < 3 {
-        padding = (3 - len) as u32;
+        padding = (3 - len) as usize;
     } else {
         while len % 3 != 0 {
             padding += 1;
@@ -99,7 +139,7 @@ fn compute_padding(bytes: &Bytes) -> u32 {
     padding
 }
 
-fn pad(bytes: &mut Bytes, padding: u32) {
+fn pad(bytes: &mut Bytes, padding: usize) {
     let mut pad = padding;
 
     while pad > 0 {

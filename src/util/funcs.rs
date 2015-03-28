@@ -1,5 +1,5 @@
-pub fn get_bit(n: u32, byte: u8) -> u8 {
-    if byte & (1 << (7 - n)) == 0 { 0 } else { 1 }
+pub fn get_bit(n: u32, word: u8, word_size: u32) -> u8 {
+    if word & (1 << ((word_size - 1) - n)) == 0 { 0 } else { 1 }
 }
 
 pub fn hex_char_to_digit(c: char) -> i32 {
