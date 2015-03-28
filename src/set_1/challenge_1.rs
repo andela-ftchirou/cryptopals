@@ -13,11 +13,7 @@ impl Base64 {
         self.storage.len() - self.padding as usize
     }
 
-    pub fn to_bytes(&self) -> Bytes {
-        self.storage.clone()
-    }
-
-    pub fn from_bytes(bytes: &Bytes) -> Base64 {
+    pub fn encode(bytes: &Bytes) -> Base64 {
         let mut cbytes = bytes.clone();
         let mut base64: Bytes = Bytes::new();
         let padding = compute_padding(&cbytes);
