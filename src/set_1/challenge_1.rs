@@ -100,7 +100,7 @@ impl Base64 {
                              '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'];
 
         let mut base64_string = String::new();
-        let len = self.len();
+        let len = self.storage.len() - self.padding;
         let mut padding = self.padding;
 
         for i in 0..len {

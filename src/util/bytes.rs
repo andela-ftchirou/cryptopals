@@ -83,6 +83,16 @@ impl Bytes {
         Bytes { raw: bytes }
     }
 
+    pub fn to_ascii_string(&self) -> String {
+        let mut str = String::new();
+
+        for byte in self.raw.iter() {
+            str.push(*byte as char);
+        }
+
+        str
+    }
+
     pub fn to_hex_string(&self) -> String {
         let table: [char; 16] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                                   'a', 'b', 'c', 'd', 'e', 'f'];
@@ -107,16 +117,6 @@ impl Bytes {
             self.raw.push(0);
             n -= 1;
         }
-    }
-
-    pub fn to_ascii_string(&self) -> String {
-        let mut str = String::new();
-
-        for byte in self.raw.iter() {
-            str.push(*byte as char);
-        }
-
-        str
     }
 }
 
