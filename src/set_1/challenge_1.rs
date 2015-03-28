@@ -9,9 +9,6 @@ pub struct Base64 {
 }
 
 impl Base64 {
-    pub fn len(&self) -> usize {
-        self.storage.len() - self.padding as usize
-    }
 
     pub fn encode(bytes: &Bytes) -> Base64 {
         let mut cbytes = bytes.clone();
