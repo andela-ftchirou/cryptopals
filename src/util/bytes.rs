@@ -106,6 +106,19 @@ impl Bytes {
         str
     }
 
+    pub fn to_binary_string(&self) -> String {
+        let mut str = String::new();
+
+        for byte in self.raw.iter() {
+            for i in 0..8 {
+                str.push(if funcs::get_bit(i, *byte, 8) == 0 { '0' } else { '1' });
+            }
+            str.push(' ');
+        }
+
+        str
+    }
+
     pub fn remove_duplicates(&mut self) {
         self.raw.dedup()
     }
