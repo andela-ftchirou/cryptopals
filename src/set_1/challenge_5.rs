@@ -23,4 +23,26 @@ pub fn encrypt_with_repeating_key_xor(input: &Bytes, key: &Bytes) -> Bytes {
 
     encrypted
 }
+
+pub fn repeat_key(key: &Bytes, n: usize) -> Bytes {
+    let mut bytes: Bytes = Bytes::new();
+    let key_len = key.len();
+    let mut start = 0;
+
+    while start <= n - key_len {
+
+        for i in 0..key_len {
+            bytes.push(key[i]);
+        }
+
+        start += key_len;
+    }
+
+    let remaining = n - start;
+    for i in 0..remaining {
+        bytes.push(key[i]);
+    }
+
+    bytes
+}
     

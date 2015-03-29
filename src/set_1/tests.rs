@@ -7,6 +7,7 @@ use super::challenge_2;
 use super::challenge_3;
 use super::challenge_4;
 use super::challenge_5;
+use super::challenge_6;
 
 use util::Bytes;
 
@@ -69,4 +70,30 @@ fn implement_repeating_key_xor() {
     let encrypted = challenge_5::encrypt_with_repeating_key_xor(&input, &key);
 
     assert_eq!("0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f", encrypted.to_hex_string());
+}
+
+#[test]
+fn break_repeating_key_xor() {
+    let path = Path::new("/home/faical/projects/cryptopals/src/set_1/challenge_6_data.txt");
+
+    let mut file = match File::open(&path) {
+        Ok(file) => file,
+        Err(err) => panic!("{}", err)
+    };
+
+    let mut input = String::new();
+    match file.read_to_string(&mut input) {
+        Err(err) => panic!("{}", err),
+        Ok(_)    => {
+            let base64: Base64 = Base64::from_string(input);
+
+            let encrypted: Bytes = base64.decode();
+
+            match challenge_6::break_repeating_key_xor(&encrypted) {
+                (key, decrypted) => {
+                    assert_eq!("Terminator X: Bring the noise", key.to_ascii_string());
+                }
+            }
+        }
+    }
 }

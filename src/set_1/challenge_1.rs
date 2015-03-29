@@ -1,4 +1,5 @@
 use std::num::Int;
+use std::collections::HashMap;
 
 use util::Bytes;
 use util::funcs;
@@ -59,7 +60,7 @@ impl Base64 {
 
         while start <= len - 4 {
             let group = &(self.storage)[start..(start + 4)];
-            let is_last_group: bool = (start == len - 4);
+            let is_last_group: bool = start == len - 4;
             let mut bitstream: Vec<u8> = Vec::new();
 
             for bits in group.iter() {
@@ -94,10 +95,10 @@ impl Base64 {
 
     pub fn to_string(&self) -> String {
         let table: [char; 64] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-                             'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-                             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-                             'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-                             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'];
+                                 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                                 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+                                 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+                                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'];
 
         let mut base64_string = String::new();
         let len = self.storage.len() - self.padding;
@@ -113,6 +114,38 @@ impl Base64 {
         }
         
         base64_string
+    }
+
+    pub fn from_string(s: String) -> Base64 {
+        let table: [char; 64] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                                 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                                 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+                                 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+                                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'];
+
+        let mut map: HashMap<char, u8> = HashMap::new();
+
+        for i in 0..64 {
+            map.insert(table[i], i as u8);
+        }
+
+        let mut bytes: Bytes = Bytes::new();
+        let mut padding: usize = 0;
+
+        for c in s.chars() {
+            if c == '=' {
+                padding += 1;
+                bytes.push(0);
+
+            } else {
+                match map.get(&c) {
+                    Some(byte) => bytes.push(*byte),
+                    None       => {}
+                };
+            }
+        }
+
+        Base64 { storage: bytes, padding: padding }
     }
 }
 
