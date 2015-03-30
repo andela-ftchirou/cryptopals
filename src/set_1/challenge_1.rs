@@ -4,6 +4,7 @@ use std::collections::HashMap;
 use util::Bytes;
 use util::funcs;
 
+/// A Base64 encoded binary data.
 pub struct Base64 {
     storage: Bytes,
     padding: usize
@@ -11,6 +12,16 @@ pub struct Base64 {
 
 impl Base64 {
 
+    /// Constructs a ```Base64``` by converting the stream of bytes ```Bytes```
+    /// to base 64.
+    ///
+    /// Example
+    ///
+    /// let bytes: Bytes = Bytes::from_ascii_string("any carnal pleasure".to_string());
+    /// let base64: Base64 = Base64::encode(&bytes);
+    /// assert_eq!(base64.to_string(), "YW55IGNhcm5hbCBwbGVhc3VyZQ==".to_string());
+    ///
+    /// Base64 Encoding procedure
     pub fn encode(bytes: &Bytes) -> Base64 {
         let mut cbytes = bytes.clone();
         let mut base64: Bytes = Bytes::new();
