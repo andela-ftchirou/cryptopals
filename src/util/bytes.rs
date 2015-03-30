@@ -22,7 +22,7 @@ use super::funcs;
 /// bytes.push(0x6c);
 /// bytes.push(0x6f);
 ///
-/// assert_eq!(bytes.to_hex_string(), "58656c6c6f");
+/// assert_eq!(bytes.to_hex_string(), "48656c6c6f");
 /// assert_eq!(bytes.to_ascii_string(), "Hello".to_string());
 /// ```
 ///
@@ -85,7 +85,7 @@ impl Bytes {
     ///
     /// ```
     /// let bytes: Bytes = Bytes::from_ascii_string("Hello");
-    /// assert_eq!(bytes.to_hex_string(), "58656c6c6f".to_string())
+    /// assert_eq!(bytes.to_hex_string(), "48656c6c6f".to_string())
     ///
     pub fn from_ascii_string(s: String) -> Bytes {
         let mut bytes: Vec<u8> = Vec::new();
@@ -102,7 +102,7 @@ impl Bytes {
     /// Examples
     ///
     /// ```
-    /// let bytes: Bytes = Bytes::from_hex_string("58656c6c6c");
+    /// let bytes: Bytes = Bytes::from_hex_string("48656c6c6c");
     /// assert_eq!(bytes.to_ascii_string(), "Hello".to_string());
     ///
     pub fn from_hex_string(s: String) -> Bytes {
@@ -151,8 +151,8 @@ impl Bytes {
     }
 
     /// Converts a ```Bytes``` to a string of ASCII encoded
-    /// characters. This function does not check if the byte is
-    /// a valid ASCII character.
+    /// characters. This function does not check if the ```Bytes```
+    /// contains valid ASCII characters.
     pub fn to_ascii_string(&self) -> String {
         let mut str = String::new();
 
