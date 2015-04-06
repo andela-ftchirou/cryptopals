@@ -165,7 +165,6 @@ impl AESEncryptor {
 
             let mut temp: Word = Word::from_slice(&key_schedule[prev_word_index..(prev_word_index + 4)]);
             
-
             if i % nk == 0 {
                 let rot: Word = AESEncryptor::rot_word(&temp);
                 let sub: Word = AESEncryptor::sub_word(&rot, &sbox);
