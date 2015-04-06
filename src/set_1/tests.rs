@@ -8,6 +8,7 @@ use super::challenge_3;
 use super::challenge_4;
 use super::challenge_5;
 use super::challenge_6;
+use super::challenge_7;
 
 use util::Bytes;
 
@@ -94,6 +95,31 @@ fn break_repeating_key_xor() {
                     assert_eq!("Terminator X: Bring the noise", key.to_ascii_string());
                 }
             }
+        }
+    }
+}
+
+#[test]
+fn aes_in_ecb_mode() {
+    let path = Path::new("/home/faical/projects/cryptopals/src/set_1/challenge_7_data.txt");
+
+    let mut file = match File::open(&path) {
+        Ok(file) => file,
+        Err(err) => panic!("{}", err)
+    };
+
+    let mut input = String::new();
+    match file.read_to_string(&mut input) {
+        Err(err) => panic!("{}", err),
+        Ok(_)    => {
+            let base64: Base64 = Base64::from_string(input);
+
+            let encrypted: Bytes = base64.decode();
+
+            let decrypted: Bytes = challenge_7::decrypt_aes_in_ecb_mode(&encrypted);
+            let decrypted_str = decrypted.to_ascii_string();
+
+            assert_eq!("I'm back and I'm ringin' the bell", decrypted_str[0..33].to_string());
         }
     }
 }
