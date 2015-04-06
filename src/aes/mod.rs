@@ -1,6 +1,7 @@
 pub use self::aesencryptor::AESEncryptor;
 pub use self::aesdecryptor::AESDecryptor;
 pub use self::blockprocessor::ECB;
+pub use self::blockprocessor::CBC;
 
 pub mod rcon;
 pub mod sbox;

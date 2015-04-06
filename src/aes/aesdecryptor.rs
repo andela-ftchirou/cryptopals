@@ -33,16 +33,14 @@ impl AESDecryptor {
 
         while start <= len - 16 {
             let block: &[u8] = &cipher[start..(start + 16)];
-            let processed_block: &[u8] = &block_processor.process(&block,
-                                                                  if start > 0 { &cipher[(start - 16)..start] } else { &init_vector },
-                                                                  if start > 0 { &plain[(start - 16)..start] } else { &init_vector });
 
-            let output: State = AESDecryptor::inv_cipher(&processed_block, &key_schedule, rounds, &inv_sbox);
+            let state: State = AESDecryptor::inv_cipher(block, &key_schedule, rounds, &inv_sbox);
 
-            for column in 0..4 {
-                for row in 0..4 {
-                    plain.push(output.get_byte(row, column));
-                }
+            let output: Vec<u8> = block_processor.process(&(state.to_vec()),
+                                                          if start > 0 { &plain[(start - 16)..start] } else { &init_vector },
+                                                          if start > 0 { &cipher[(start - 16)..start] } else { &init_vector });
+            for byte in output {
+                plain.push(byte);
             }
 
             start += 16;
