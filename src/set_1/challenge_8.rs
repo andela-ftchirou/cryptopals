@@ -23,7 +23,6 @@ pub fn detect_aes_in_ecb_mode(input: &String) -> String {
             i += 32;
         }
 
-
         for (block, frequency) in block_frequency.iter() {
             if *frequency > 1 {
                 return ciphertext.to_string()
