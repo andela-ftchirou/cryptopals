@@ -9,63 +9,34 @@ use std::ops::RangeFull;
 
 use super::funcs;
 
-/// A wrapper around ```Vec<u8>``` to make it more convenient to work with a
-/// stream of bytes.
-///
-/// # Examples
-///
-/// ```
-/// let mut bytes = Bytes::new();
-/// bytes.push(0x48);
-/// bytes.push(0x65);
-/// bytes.push(0x6c);
-/// bytes.push(0x6c);
-/// bytes.push(0x6f);
-///
-/// assert_eq!(bytes.to_hex_string(), "48656c6c6f");
-/// assert_eq!(bytes.to_ascii_string(), "Hello".to_string());
-/// ```
-///
 pub struct Bytes {
     raw: Vec<u8>
 }
 
 impl Bytes {
-    /// Constructs a new and empty ```Bytes```.
+
     pub fn new() -> Bytes {
         Bytes { raw: Vec::new() }
     }
 
-    /// Returns the number of byte in a ```Bytes```.
     pub fn len(&self) -> usize {
         self.raw.len()
     }
 
-    /// Add a byte to the end of the ```Bytes```.
     pub fn push(&mut self, byte: u8) {
         self.raw.push(byte)
     }
 
-    /// Constructs a new ```Bytes``` with the contents of
-    /// the ```Vec<u8>``` passed as argument.
     pub fn from_raw_bytes(bytes: &Vec<u8>) -> Bytes {
         Bytes { raw: bytes.clone() }
     }
 
-    /// Returns an equivalent ```Vec<u8>``` of a ```Bytes```.
     pub fn to_raw_bytes(&self) -> Vec<u8> {
         self.raw.clone()
     }
 
     /// Constructs a new ```Bytes``` by repeating ```byte```
     /// ```n``` times.
-    ///
-    /// Examples
-    ///
-    /// ```
-    /// let bytes: Bytes = Bytes::from_repeating_key(0x41, 5);
-    /// assert_eq!(bytes.to_ascii_string(), "AAAAA");
-    ///
     pub fn from_repeating_byte(byte: u8, n: usize) -> Bytes {
         let mut bytes: Vec<u8> = Vec::new();
         let mut repeat = n;
@@ -78,15 +49,6 @@ impl Bytes {
         Bytes { raw: bytes }
     }
 
-    /// Constructs a new ```Bytes``` from a string of characters
-    /// encoded with ASCII.
-    ///
-    /// Examples
-    ///
-    /// ```
-    /// let bytes: Bytes = Bytes::from_ascii_string("Hello");
-    /// assert_eq!(bytes.to_hex_string(), "48656c6c6f".to_string())
-    ///
     pub fn from_ascii_string(s: String) -> Bytes {
         let mut bytes: Vec<u8> = Vec::new();
 
@@ -97,14 +59,6 @@ impl Bytes {
         Bytes { raw: bytes }
     }
 
-    /// Constructs a new ```Bytes``` from a hexadecimal string.
-    ///
-    /// Examples
-    ///
-    /// ```
-    /// let bytes: Bytes = Bytes::from_hex_string("48656c6c6c");
-    /// assert_eq!(bytes.to_ascii_string(), "Hello".to_string());
-    ///
     pub fn from_hex_string(s: String) -> Bytes {
         let mut bytes: Vec<u8> = Vec::new();
         let len = s.len();
@@ -150,9 +104,6 @@ impl Bytes {
         Bytes { raw: bytes }
     }
 
-    /// Converts a ```Bytes``` to a string of ASCII encoded
-    /// characters. This function does not check if the ```Bytes```
-    /// contains valid ASCII characters.
     pub fn to_ascii_string(&self) -> String {
         let mut str = String::new();
 
@@ -163,8 +114,6 @@ impl Bytes {
         str
     }
 
-    /// Converts a ```Bytes``` to a hexadecimal string.
-    /// Each byte will correspond to 2 hexadecimal characters.
     pub fn to_hex_string(&self) -> String {
         let table: [char; 16] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                                   'a', 'b', 'c', 'd', 'e', 'f'];
@@ -191,8 +140,6 @@ impl Bytes {
         str
     }
 
-    /// Converts a ```Bytes``` to a binary string. Groups of 8 bits are
-    /// separated by spaces in the string.
     pub fn to_binary_string(&self) -> String {
         let mut str = String::new();
 
@@ -206,7 +153,7 @@ impl Bytes {
         str
     }
 
-    /// Remotes duplicates in a sorted ```Bytes```.
+    /// Removes duplicates in a sorted ```Bytes```.
     pub fn remove_duplicates(&mut self) {
         self.raw.dedup()
     }
@@ -222,8 +169,6 @@ impl Bytes {
     }
 }
 
-/// Implements various traits to make ```Bytes``` more convenient to use.
-/// The following implementations only forward to the underlying ```Vec<u8>```.
 impl Index<usize> for Bytes {
     type Output = u8;
 
