@@ -2,8 +2,9 @@ use util::Bytes;
 
 /// Pads `input` with PKCS#7 (http://tools.ietf.org/html/rfc5652#section-6.3)
 /// so that its length will be a multiple of `block_size`.
-/// In PKCS#7, inputs are padded with k - (l mod k) where
+/// In PKCS#7, inputs are padded with k - (l mod k) bytes where
 /// k is the block size, l is the length of the input.
+/// The value of each byte to append is also equal to k - (l mod k).
 pub fn pkcs7_pad(input: &mut Bytes, block_size: usize) {
     let len: usize = input.len();
 
